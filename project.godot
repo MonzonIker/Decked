@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Decked"
-run/main_scene="uid://d3svc04m1m3us"
+run/main_scene="uid://by0mosax5g13l"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 run/default_gravity_vector=Vector2(0, 1)
@@ -20,6 +20,11 @@ run/canvas_textures/default_texture_filter=1
 [autoload]
 
 Music="*res://scenes/music.tscn"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 
 [physics]
 
