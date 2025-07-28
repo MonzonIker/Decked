@@ -29,6 +29,8 @@ window/size/viewport_height=1080
 [global_group]
 
 tile=""
+trap=""
+player=""
 
 [input]
 

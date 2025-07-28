@@ -1,0 +1,148 @@
+[gd_scene load_steps=20 format=3 uid="uid://cc5lc36p5t66d"]
+
+[ext_resource type="Script" uid="uid://d226h7s3yevr6" path="res://fire_trap.gd" id="1_6dvj4"]
+[ext_resource type="Texture2D" uid="uid://b2sx2c4eq0s2o" path="res://assets/traps/Fire_Trap.png" id="1_disgf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6dvj4"]
+atlas = ExtResource("1_disgf")
+region = Rect2(0, 0, 32, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ehxbr"]
+atlas = ExtResource("1_disgf")
+region = Rect2(32, 0, 32, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0b03g"]
+atlas = ExtResource("1_disgf")
+region = Rect2(64, 0, 32, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ld51v"]
+atlas = ExtResource("1_disgf")
+region = Rect2(96, 0, 32, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5kh4j"]
+atlas = ExtResource("1_disgf")
+region = Rect2(128, 0, 32, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hs63w"]
+atlas = ExtResource("1_disgf")
+region = Rect2(160, 0, 32, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o815e"]
+atlas = ExtResource("1_disgf")
+region = Rect2(192, 0, 32, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7yu6c"]
+atlas = ExtResource("1_disgf")
+region = Rect2(224, 0, 32, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ntbpo"]
+atlas = ExtResource("1_disgf")
+region = Rect2(256, 0, 32, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2vrld"]
+atlas = ExtResource("1_disgf")
+region = Rect2(288, 0, 32, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pmi2j"]
+atlas = ExtResource("1_disgf")
+region = Rect2(320, 0, 32, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_inrhm"]
+atlas = ExtResource("1_disgf")
+region = Rect2(352, 0, 32, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t76jn"]
+atlas = ExtResource("1_disgf")
+region = Rect2(384, 0, 32, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dv46s"]
+atlas = ExtResource("1_disgf")
+region = Rect2(416, 0, 32, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o32ps"]
+atlas = ExtResource("1_disgf")
+region = Rect2(0, 0, 32, 41)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1y55g"]
+animations = [{
+"frames": [{
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_6dvj4")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_ehxbr")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_0b03g")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_ld51v")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_5kh4j")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_hs63w")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_o815e")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_7yu6c")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_ntbpo")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_2vrld")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_pmi2j")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_inrhm")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_t76jn")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_dv46s")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_6dvj4")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o32ps")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ehxbr"]
+size = Vector2(8, 7)
+
+[node name="fire_trap" type="Node2D"]
+script = ExtResource("1_6dvj4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -5)
+scale = Vector2(0.45, 0.45)
+sprite_frames = SubResource("SpriteFrames_1y55g")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="Area2D" type="Area2D" parent="." groups=["trap"]]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_ehxbr")
+disabled = true
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

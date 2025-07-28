@@ -309,7 +309,7 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dqkch"]
 size = Vector2(10, 10)
 
-[node name="CharacterBody2D" type="Area2D"]
+[node name="CharacterBody2D" type="Area2D" groups=["player"]]
 y_sort_enabled = true
 collision_layer = 2
 script = ExtResource("1_g2els")
@@ -323,7 +323,6 @@ position = Vector2(0, -5)
 sprite_frames = SubResource("SpriteFrames_1jxqw")
 animation = &"idle ui_down"
 autoplay = "idle ui_down"
-frame_progress = 0.302472
 
 [node name="RayCast2d" type="RayCast2D" parent="."]
 collision_mask = 3

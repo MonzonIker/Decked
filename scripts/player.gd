@@ -4,9 +4,12 @@ signal tp_up
 signal tp_used
 signal not_enough_mana
 signal consume_mana
+signal moved
+signal damage
 
 var can_move = true
 var mana = 0
+var movement = 3
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_select"):
@@ -28,14 +31,14 @@ func end_tp():
 	$tp_down.visible = false
 	$tp_up.visible = false
 
-
-
-
 func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("kill_zone"):
 			get_tree().current_scene.get_child(0).kill_player()
 	if area.is_in_group("tile"):
 		area.ocupied=true
+	if area.is_in_group("trap"):
+		print("damage")
+		emit_signal("damage")
 		
 		
 func _on_area_exited(area: Area2D) -> void:
@@ -64,8 +67,9 @@ func _unhandled_input(event):
 	if moving:
 		return
 	for dir in inputs.keys():
-		if event.is_action_pressed(dir) and can_move:
+		if event.is_action_pressed(dir) and can_move and movement>0:
 			move(dir)
+			
 			
 func move(dir):
 	ray.target_position = inputs[dir] * tile_size
@@ -78,4 +82,6 @@ func move(dir):
 		moving = true
 		await tween.finished
 		moving = false
+		movement -= 1
+		emit_signal("moved")
 	$AnimatedSprite2D.play("idle "+dir)

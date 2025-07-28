@@ -1,9 +1,10 @@
-[gd_scene load_steps=48 format=4 uid="uid://d3svc04m1m3us"]
+[gd_scene load_steps=53 format=4 uid="uid://d3svc04m1m3us"]
 
 [ext_resource type="Script" uid="uid://dfnodwxv6h0me" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="Texture2D" uid="uid://bs7xem4r27kfd" path="res://assets/Free Dungeon - Fantasy Dreamland/16x16/FD_Dungeon_Free.png" id="1_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://co7bljkxxsl6q" path="res://scenes/player.tscn" id="2_lnu2h"]
 [ext_resource type="Script" uid="uid://b5n06044u2h6s" path="res://scripts/game_manager.gd" id="2_p57ef"]
+[ext_resource type="Script" uid="uid://begjji7yd5oqn" path="res://scripts/traps.gd" id="3_ir15t"]
 [ext_resource type="PackedScene" uid="uid://bo7murfbr2epg" path="res://scenes/tile.tscn" id="3_vtaks"]
 [ext_resource type="FontFile" uid="uid://dtiokjwtxn6hy" path="res://assets/brackeys_platformer_assets/fonts/PixelOperator8.ttf" id="5_iywne"]
 [ext_resource type="Script" uid="uid://e5oo4vdgk2y0" path="res://scripts/coins.gd" id="5_u5sy4"]
@@ -13,6 +14,7 @@
 [ext_resource type="FontFile" uid="uid://los5xkgj8yr6" path="res://assets/brackeys_platformer_assets/fonts/PixelOperator8-Bold.ttf" id="9_kvpfn"]
 [ext_resource type="Script" uid="uid://c15ghgpige36r" path="res://scripts/cancel_tp.gd" id="10_dinhu"]
 [ext_resource type="Texture2D" uid="uid://bijjsxyql3nh2" path="res://assets/brackeys_platformer_assets/sprites/mana.png" id="11_kvuet"]
+[ext_resource type="PackedScene" uid="uid://bi6f7fcyi7toe" path="res://scenes/life_bar.tscn" id="12_trtic"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e2o6t"]
 texture = ExtResource("1_yqjtg")
@@ -819,6 +821,16 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kvuet"]
+bg_color = Color(0.582084, 0.619546, 0.626327, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trtic"]
+bg_color = Color(0.87159, 0.490693, 1.92523e-07, 1)
+
+[sub_resource type="Theme" id="Theme_ir15t"]
+ProgressBar/styles/background = SubResource("StyleBoxFlat_kvuet")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_trtic")
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0tnpc"]
 texture = ExtResource("8_gee14")
 0:0/0 = 0
@@ -1036,6 +1048,9 @@ script = ExtResource("1_lnu2h")
 unique_name_in_owner = true
 script = ExtResource("2_p57ef")
 
+[node name="traps" type="Node" parent="GameManager"]
+script = ExtResource("3_ir15t")
+
 [node name="map" type="Node" parent="."]
 
 [node name="tile" parent="map" instance=ExtResource("3_vtaks")]
@@ -1134,6 +1149,7 @@ offset_right = -200.0
 offset_bottom = 92.0
 focus_mode = 0
 theme_override_fonts/font = ExtResource("9_kvpfn")
+theme_override_font_sizes/font_size = 8
 text = "CANCEL"
 script = ExtResource("10_dinhu")
 
@@ -1161,6 +1177,58 @@ offset_bottom = 4.0
 theme_override_fonts/font = ExtResource("5_iywne")
 theme_override_font_sizes/font_size = 8
 text = "0"
+
+[node name="ProgressBar" type="ProgressBar" parent="player/Camera2D"]
+offset_left = -124.0
+offset_top = 84.0
+offset_right = 155.0
+offset_bottom = 111.0
+theme = SubResource("Theme_ir15t")
+max_value = 3.0
+step = 1.0
+value = 3.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="player/Camera2D/ProgressBar"]
+layout_mode = 0
+offset_left = 113.0
+offset_top = 6.0
+offset_right = 153.0
+offset_bottom = 29.0
+theme_override_fonts/font = ExtResource("5_iywne")
+text = "3/3"
+
+[node name="turn" type="Button" parent="player/Camera2D"]
+offset_left = 156.0
+offset_top = 51.0
+offset_right = 229.0
+offset_bottom = 71.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("5_iywne")
+theme_override_font_sizes/font_size = 8
+text = "Pass turn"
+
+[node name="turn_text" type="Label" parent="player/Camera2D"]
+offset_left = -45.0
+offset_top = -127.0
+offset_right = -5.0
+offset_bottom = -104.0
+theme_override_fonts/font = ExtResource("9_kvpfn")
+theme_override_font_sizes/font_size = 8
+text = "Turn:"
+
+[node name="actual_turn" type="Label" parent="player/Camera2D/turn_text"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 2.0
+offset_right = 80.0
+offset_bottom = 25.0
+theme_override_fonts/font = ExtResource("5_iywne")
+theme_override_font_sizes/font_size = 8
+text = "0"
+
+[node name="life_bar" parent="player/Camera2D" instance=ExtResource("12_trtic")]
+position = Vector2(-220, -94)
 
 [node name="controls" type="Node" parent="."]
 unique_name_in_owner = true
@@ -1206,7 +1274,11 @@ theme_override_font_sizes/font_size = 8
 text = "Pick the coins!"
 
 [connection signal="consume_mana" from="player" to="GameManager" method="_on_player_consume_mana"]
+[connection signal="damage" from="player" to="GameManager" method="_on_player_damage"]
+[connection signal="moved" from="player" to="GameManager" method="_on_player_moved"]
 [connection signal="not_enough_mana" from="player" to="GameManager" method="_on_player_not_enough_mana"]
 [connection signal="tp_up" from="player" to="player/Camera2D/Button" method="_on_player_tp_up"]
 [connection signal="tp_used" from="player" to="player/Camera2D/Button" method="_on_player_tp_used"]
 [connection signal="pressed" from="player/Camera2D/Button" to="player/Camera2D/Button" method="_on_pressed"]
+[connection signal="pressed" from="player/Camera2D/turn" to="GameManager" method="_on_turn_pressed"]
+[connection signal="lose_game" from="player/Camera2D/life_bar" to="GameManager" method="_on_life_bar_lose_game"]
