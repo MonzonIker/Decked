@@ -1,11 +1,13 @@
-[gd_scene load_steps=38 format=3 uid="uid://co7bljkxxsl6q"]
+[gd_scene load_steps=44 format=3 uid="uid://co7bljkxxsl6q"]
 
 [ext_resource type="Texture2D" uid="uid://dj3tpndaen7a5" path="res://assets/Free Character Sprites 2 - Fantasy Dreamland/24x24/Char_007_Idle.png" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://t3txbtv0h6s3" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Texture2D" uid="uid://bs7xem4r27kfd" path="res://assets/Free Dungeon - Fantasy Dreamland/16x16/FD_Dungeon_Free.png" id="2_dqkch"]
 [ext_resource type="Texture2D" uid="uid://dms0ht6o43vw6" path="res://assets/Free Character Sprites 2 - Fantasy Dreamland/24x24/Char_007.png" id="3_qhqgy"]
+[ext_resource type="Script" uid="uid://dmg2p234qs3yj" path="res://scripts/tp.gd" id="4_qlg0r"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_onrkg"]
-size = Vector2(10, 10)
+size = Vector2(6, 6)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i3pqv"]
 atlas = ExtResource("1_4flbx")
@@ -274,6 +276,39 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_wnwbv"]
+atlas = ExtResource("2_dqkch")
+region = Rect2(416, 96, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gl8cc"]
+atlas = ExtResource("2_dqkch")
+region = Rect2(448, 96, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_487ah"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wnwbv")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wnwbv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gl8cc")
+}],
+"loop": true,
+"name": &"hover",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dqkch"]
+size = Vector2(10, 10)
+
 [node name="CharacterBody2D" type="Area2D"]
 y_sort_enabled = true
 collision_layer = 2
@@ -292,3 +327,66 @@ frame_progress = 0.302472
 
 [node name="RayCast2d" type="RayCast2D" parent="."]
 collision_mask = 3
+
+[node name="tp_right" type="Area2D" parent="."]
+visible = false
+z_index = -1
+position = Vector2(32, 3)
+script = ExtResource("4_qlg0r")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="tp_right"]
+sprite_frames = SubResource("SpriteFrames_487ah")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="tp_right"]
+shape = SubResource("RectangleShape2D_dqkch")
+
+[node name="tp_left" type="Area2D" parent="."]
+visible = false
+z_index = -1
+position = Vector2(-32, 3)
+script = ExtResource("4_qlg0r")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="tp_left"]
+sprite_frames = SubResource("SpriteFrames_487ah")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="tp_left"]
+shape = SubResource("RectangleShape2D_dqkch")
+
+[node name="tp_up" type="Area2D" parent="."]
+visible = false
+z_index = -1
+position = Vector2(0, -29)
+script = ExtResource("4_qlg0r")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="tp_up"]
+sprite_frames = SubResource("SpriteFrames_487ah")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="tp_up"]
+shape = SubResource("RectangleShape2D_dqkch")
+
+[node name="tp_down" type="Area2D" parent="."]
+visible = false
+z_index = -1
+position = Vector2(0, 35)
+script = ExtResource("4_qlg0r")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="tp_down"]
+sprite_frames = SubResource("SpriteFrames_487ah")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="tp_down"]
+shape = SubResource("RectangleShape2D_dqkch")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="input_event" from="tp_right" to="tp_right" method="_on_input_event"]
+[connection signal="mouse_entered" from="tp_right" to="tp_right" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="tp_right" to="tp_right" method="_on_mouse_exited"]
+[connection signal="input_event" from="tp_left" to="tp_left" method="_on_input_event"]
+[connection signal="mouse_entered" from="tp_left" to="tp_left" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="tp_left" to="tp_left" method="_on_mouse_exited"]
+[connection signal="input_event" from="tp_up" to="tp_up" method="_on_input_event"]
+[connection signal="mouse_entered" from="tp_up" to="tp_up" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="tp_up" to="tp_up" method="_on_mouse_exited"]
+[connection signal="input_event" from="tp_down" to="tp_down" method="_on_input_event"]
+[connection signal="mouse_entered" from="tp_down" to="tp_down" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="tp_down" to="tp_down" method="_on_mouse_exited"]

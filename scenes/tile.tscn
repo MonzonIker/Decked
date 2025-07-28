@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3 uid="uid://bo7murfbr2epg"]
+
+[ext_resource type="Texture2D" uid="uid://bs7xem4r27kfd" path="res://assets/Free Dungeon - Fantasy Dreamland/16x16/FD_Dungeon_Free.png" id="1_3dk36"]
+[ext_resource type="Script" uid="uid://b4uqi33mfgolk" path="res://scripts/tile.gd" id="1_ywnoi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jy7pm"]
+atlas = ExtResource("1_3dk36")
+region = Rect2(144, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0tnpc"]
+atlas = ExtResource("1_3dk36")
+region = Rect2(144, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vtaks"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jy7pm")
+}],
+"loop": true,
+"name": &"1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0tnpc")
+}],
+"loop": true,
+"name": &"2",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kvpfn"]
+size = Vector2(7, 7)
+
+[node name="tile" type="Area2D" groups=["tile"]]
+z_index = -2
+script = ExtResource("1_ywnoi")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_vtaks")
+animation = &"2"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(7.5, 7.5)
+shape = SubResource("RectangleShape2D_kvpfn")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
